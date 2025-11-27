@@ -11,7 +11,7 @@ const Page: React.FC = () => {
 
   return (
     <main className="page-root">
-      {/* --- PHOTO COLLAGE BACKGROUND (now with actual children) --- */}
+      {/* --- PHOTO COLLAGE BACKGROUND --- */}
       <div className="photo-collage-bg">
         <div></div>
         <div></div>
@@ -24,48 +24,67 @@ const Page: React.FC = () => {
       <div className="page-overlay" />
 
       <div className="page-content">
-        <section className="card">
-          <header className="card-header">
-            <p className="card-subtitle">Thanksgiving · 2025</p>
-            <h1 className="card-title">
-              For Anna, in the Quiet Between Scenes
-            </h1>
-          </header>
+        {/* WRAPPER THAT ALLOWS THE TURKEY TO ESCAPE THE CARD */}
+        <div className="card-wrapper">
+          {/* FLOATING TURKEY (now ABOVE the card, not inside it) */}
+          <img
+            src="/turkey.png"
+            alt="Turkey"
+            className="floating-turkey"
+            aria-hidden="true"
+          />
 
-          <section className="card-body">
-            {poemParagraphs.map((stanza, i) => (
-              <p key={i} className="poem-stanza">
-                {stanza.split("\n").map((line, j) => (
-                  <span className="poem-line" key={j}>
-                    {line}
-                  </span>
-                ))}
+          <section className="card">
+            <header className="card-header">
+              <p className="card-subtitle">Thanksgiving · 2025</p>
+              <h1 className="card-title">
+                For Anna, in the Quiet Between Scenes
+              </h1>
+            </header>
+
+            <section className="card-body">
+              {poemParagraphs.map((stanza, i) => (
+                <p key={i} className="poem-stanza">
+                  {stanza.split("\n").map((line, j) => (
+                    <span className="poem-line" key={j}>
+                      {line}
+                    </span>
+                  ))}
+                </p>
+              ))}
+            </section>
+
+            {/* --- FOOTER --- */}
+            <footer className="card-footer">
+              <p
+                className="card-footer-text clickable"
+                onClick={() => setShowScroll(true)}
+              >
+                P.S. There’s more — tap to open the letter.
               </p>
-            ))}
+
+              <button
+                type="button"
+                className="scroll-button clickable"
+                onClick={() => setShowScroll(true)}
+              >
+                open letter
+              </button>
+            </footer>
           </section>
-
-          <footer className="card-footer">
-            <p className="card-footer-text">
-              P.S. click this button. there is more.
-            </p>
-
-            <button
-              type="button"
-              className="scroll-button"
-              onClick={() => setShowScroll(true)}
-            >
-              click me
-            </button>
-          </footer>
-        </section>
+        </div>
       </div>
 
       {showScroll && (
-        <div className="modal-backdrop" aria-modal="true" role="dialog">
+        <div
+          className="modal-backdrop clickable"
+          aria-modal="true"
+          role="dialog"
+        >
           <div className="modal-scroll">
             <button
               type="button"
-              className="modal-close"
+              className="modal-close clickable"
               onClick={() => setShowScroll(false)}
             >
               ✕
@@ -82,7 +101,7 @@ const Page: React.FC = () => {
         </div>
       )}
 
-      {/* --- GLOBAL STYLES --- */}
+      {/* --- GLOBAL STYLING --- */}
       <style jsx global>{`
         :root {
           color-scheme: dark;
@@ -101,7 +120,42 @@ const Page: React.FC = () => {
           color: #f9fafb;
         }
 
-        /* --- PHOTO COLLAGE GRID --- */
+        .clickable {
+          cursor: pointer;
+        }
+
+        /* WRAPPER FOR CARD + TURKEY */
+        .card-wrapper {
+          position: relative;
+          width: 100%;
+        }
+
+        /* --- FLOATING TURKEY (NOT CLIPPED ANYMORE) --- */
+        .floating-turkey {
+          position: absolute;
+          top: -28px;
+          right: -24px;
+          width: 95px;
+          height: auto;
+          z-index: 9999; /* sits above card */
+          pointer-events: none;
+          filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.7));
+          animation: turkey-float 3.2s ease-in-out infinite;
+        }
+
+        @keyframes turkey-float {
+          0% {
+            transform: translateY(0px) rotate(-3deg);
+          }
+          50% {
+            transform: translateY(-10px) rotate(3deg);
+          }
+          100% {
+            transform: translateY(0px) rotate(-3deg);
+          }
+        }
+
+        /* --- PHOTO COLLAGE BG --- */
         .photo-collage-bg {
           position: fixed;
           inset: 0;
@@ -138,7 +192,6 @@ const Page: React.FC = () => {
           background-image: url("/photos/6.png");
         }
 
-        /* subtle dark overlay */
         .photo-collage-bg::after {
           content: "";
           position: absolute;
@@ -148,7 +201,6 @@ const Page: React.FC = () => {
         }
 
         /* --- PAGE LAYOUT --- */
-
         .page-root {
           min-height: 100vh;
           display: flex;
@@ -166,6 +218,7 @@ const Page: React.FC = () => {
         }
 
         .card {
+          position: relative;
           background: rgba(8, 12, 24, 0.88);
           backdrop-filter: blur(22px);
           border-radius: 22px;
@@ -206,18 +259,39 @@ const Page: React.FC = () => {
         }
 
         .card-footer {
-          margin-top: 1.2rem;
+          margin-top: 1.4rem;
+          text-align: center;
+        }
+
+        .card-footer-text {
+          font-size: 0.9rem;
+          margin-bottom: 0.7rem;
+          opacity: 0.85;
+          color: #fef9c3;
+          font-style: italic;
+          transition: opacity 0.2s ease;
+        }
+
+        .card-footer-text:hover {
+          opacity: 1;
         }
 
         .scroll-button {
-          padding: 0.5rem 1rem;
-          font-size: 0.85rem;
-          border-radius: 8px;
-          background: rgba(251, 191, 36, 0.15);
-          border: 1px solid rgba(251, 191, 36, 0.3);
+          padding: 0.55rem 1.2rem;
+          font-size: 0.9rem;
+          border-radius: 10px;
+          background: rgba(251, 191, 36, 0.2);
+          border: 1px solid rgba(251, 191, 36, 0.35);
           color: #fef9c3;
           cursor: pointer;
+          transition: background 0.15s ease;
         }
+
+        .scroll-button:hover {
+          background: rgba(251, 191, 36, 0.3);
+        }
+
+        /* --- MODAL --- */
 
         .modal-backdrop {
           position: fixed;
@@ -229,12 +303,31 @@ const Page: React.FC = () => {
           align-items: center;
           padding: 1.5rem;
           z-index: 50;
+          cursor: pointer;
         }
 
         .modal-scroll {
           width: 100%;
           max-width: 640px;
           position: relative;
+          animation: scroll-pop 260ms ease-out;
+          cursor: default;
+        }
+
+        .modal-close {
+          position: absolute;
+          top: -2.2rem;
+          right: 0;
+          color: #ddd;
+          font-size: 1.3rem;
+          background: none;
+          border: none;
+          cursor: pointer;
+        }
+
+        .scrollable-letter {
+          max-height: 80vh;
+          overflow-y: auto;
         }
 
         .scroll-inner {
@@ -254,6 +347,17 @@ const Page: React.FC = () => {
           font-size: 1rem;
           color: #3b1f0b;
           line-height: 1.7;
+        }
+
+        @keyframes scroll-pop {
+          from {
+            opacity: 0;
+            transform: translateY(12px) scale(0.97);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
         }
       `}</style>
     </main>

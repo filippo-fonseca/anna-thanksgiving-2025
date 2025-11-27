@@ -20,7 +20,7 @@ a little more like myself.
 
 And somehow,
 in the small rituals we share—
-a walk, a glance, a study session—
+a walk, a glance, a run, a study session—
 I feel this quiet truth forming:
 
 I’m grateful for you.
