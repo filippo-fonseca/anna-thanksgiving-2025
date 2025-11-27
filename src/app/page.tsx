@@ -75,6 +75,7 @@ const Page: React.FC = () => {
         </div>
       </div>
 
+      {/* --- MODAL --- */}
       {showScroll && (
         <div
           className="modal-backdrop clickable"
@@ -100,6 +101,12 @@ const Page: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* --- SPONSORSHIP BANNER --- */}
+      <div className="sponsor-banner">
+        sponsored by <strong>Magic Sparkle Wonderland Inc.</strong>{" "}
+        <span className="serious">(we don’t take this lightly)</span>
+      </div>
 
       {/* --- GLOBAL STYLING --- */}
       <style jsx global>{`
@@ -130,14 +137,14 @@ const Page: React.FC = () => {
           width: 100%;
         }
 
-        /* --- FLOATING TURKEY (NOT CLIPPED ANYMORE) --- */
+        /* --- FLOATING TURKEY --- */
         .floating-turkey {
           position: absolute;
           top: -28px;
           right: -24px;
           width: 95px;
           height: auto;
-          z-index: 9999; /* sits above card */
+          z-index: 9999;
           pointer-events: none;
           filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.7));
           animation: turkey-float 3.2s ease-in-out infinite;
@@ -152,6 +159,46 @@ const Page: React.FC = () => {
           }
           100% {
             transform: translateY(0px) rotate(-3deg);
+          }
+        }
+
+        /* --- SPONSOR BANNER --- */
+        .sponsor-banner {
+          position: fixed;
+          bottom: 0.75rem;
+          left: 50%;
+          transform: translateX(-50%);
+          background: rgba(255, 255, 255, 0.16);
+          backdrop-filter: blur(10px);
+          padding: 0.6rem 1.2rem;
+          border-radius: 14px;
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          font-size: 0.75rem;
+          letter-spacing: 0.3px;
+          color: #fdf5d2;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+          z-index: 99999;
+          animation: sponsor-pop 0.7s ease-out;
+        }
+
+        .sponsor-banner strong {
+          color: #fff7ae;
+        }
+
+        .sponsor-banner .serious {
+          opacity: 0.75;
+          font-style: italic;
+          margin-left: 4px;
+        }
+
+        @keyframes sponsor-pop {
+          from {
+            opacity: 0;
+            transform: translate(-50%, 8px);
+          }
+          to {
+            opacity: 1;
+            transform: translate(-50%, 0);
           }
         }
 
@@ -292,7 +339,6 @@ const Page: React.FC = () => {
         }
 
         /* --- MODAL --- */
-
         .modal-backdrop {
           position: fixed;
           inset: 0;
