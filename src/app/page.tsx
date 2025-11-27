@@ -11,6 +11,16 @@ const Page: React.FC = () => {
 
   return (
     <main className="page-root">
+      {/* --- PHOTO COLLAGE BACKGROUND (now with actual children) --- */}
+      <div className="photo-collage-bg">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+
       <div className="page-overlay" />
 
       <div className="page-content">
@@ -62,20 +72,17 @@ const Page: React.FC = () => {
             </button>
 
             <div className="scroll-inner scrollable-letter">
-              <div className="scroll-ornament scroll-ornament--top" />
-
               <article className="scroll-text">
                 {letterParagraphs.map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}
               </article>
-
-              <div className="scroll-ornament scroll-ornament--bottom" />
             </div>
           </div>
         </div>
       )}
 
+      {/* --- GLOBAL STYLES --- */}
       <style jsx global>{`
         :root {
           color-scheme: dark;
@@ -91,14 +98,56 @@ const Page: React.FC = () => {
 
         body {
           min-height: 100vh;
-          background: radial-gradient(
-            circle at top,
-            #f7e6c4 0,
-            #0b1020 45%,
-            #040712 100%
-          );
           color: #f9fafb;
         }
+
+        /* --- PHOTO COLLAGE GRID --- */
+        .photo-collage-bg {
+          position: fixed;
+          inset: 0;
+          z-index: 0;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-rows: repeat(2, 1fr);
+          pointer-events: none;
+          overflow: hidden;
+        }
+
+        .photo-collage-bg > div {
+          background-size: cover;
+          background-position: center;
+          filter: brightness(0.7) contrast(0.9) blur(2px);
+        }
+
+        .photo-collage-bg > div:nth-child(1) {
+          background-image: url("/photos/1.png");
+        }
+        .photo-collage-bg > div:nth-child(2) {
+          background-image: url("/photos/2.png");
+        }
+        .photo-collage-bg > div:nth-child(3) {
+          background-image: url("/photos/3.png");
+        }
+        .photo-collage-bg > div:nth-child(4) {
+          background-image: url("/photos/4.png");
+        }
+        .photo-collage-bg > div:nth-child(5) {
+          background-image: url("/photos/5.png");
+        }
+        .photo-collage-bg > div:nth-child(6) {
+          background-image: url("/photos/6.png");
+        }
+
+        /* subtle dark overlay */
+        .photo-collage-bg::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.55);
+          backdrop-filter: blur(1px);
+        }
+
+        /* --- PAGE LAYOUT --- */
 
         .page-root {
           min-height: 100vh;
@@ -106,51 +155,50 @@ const Page: React.FC = () => {
           justify-content: center;
           align-items: center;
           padding: 1rem;
+          position: relative;
+          z-index: 2;
         }
 
         .page-content {
           width: 100%;
-          max-width: 720px; /* ↓ smaller */
-          z-index: 1;
+          max-width: 720px;
+          z-index: 2;
         }
 
         .card {
           background: rgba(8, 12, 24, 0.88);
           backdrop-filter: blur(22px);
-          border-radius: 22px; /* ↓ smaller */
+          border-radius: 22px;
           border: 1px solid rgba(251, 191, 36, 0.3);
-
-          padding: 1.4rem 1.2rem; /* ↓ significantly smaller */
-          max-height: 82vh; /* ↓ smaller */
+          padding: 1.4rem 1.2rem;
+          max-height: 82vh;
           overflow-y: auto;
-
           box-shadow: 0 18px 55px rgba(0, 0, 0, 0.7);
-          position: relative;
         }
 
         .card-header {
-          margin-bottom: 0.6rem; /* ↓ smaller */
+          margin-bottom: 0.6rem;
         }
 
         .card-title {
           margin: 0;
           font-family: Georgia, serif;
-          font-size: clamp(1.4rem, 2vw, 1.9rem); /* ↓ smaller */
+          font-size: clamp(1.4rem, 2vw, 1.9rem);
           color: #fef9c3;
         }
 
         .card-subtitle {
           margin: 0 0 0.25rem 0;
-          font-size: 0.7rem; /* ↓ smaller */
+          font-size: 0.7rem;
           opacity: 0.7;
           letter-spacing: 0.5px;
         }
 
         .poem-stanza {
-          margin-bottom: 0.7rem; /* ↓ smaller */
+          margin-bottom: 0.7rem;
           font-family: Georgia, serif;
-          font-size: 0.88rem; /* ↓ smaller */
-          line-height: 1.55; /* ↓ slightly */
+          font-size: 0.88rem;
+          line-height: 1.55;
         }
 
         .poem-line {
@@ -158,31 +206,18 @@ const Page: React.FC = () => {
         }
 
         .card-footer {
-          margin-top: 1.2rem; /* ↓ smaller */
-        }
-
-        .card-footer-text {
-          font-size: 0.85rem; /* ↓ smaller */
-          margin-bottom: 0.6rem;
-          opacity: 0.85;
+          margin-top: 1.2rem;
         }
 
         .scroll-button {
           padding: 0.5rem 1rem;
-          font-size: 0.85rem; /* ↓ smaller */
+          font-size: 0.85rem;
           border-radius: 8px;
           background: rgba(251, 191, 36, 0.15);
           border: 1px solid rgba(251, 191, 36, 0.3);
           color: #fef9c3;
           cursor: pointer;
-          transition: background 0.15s ease, border 0.15s ease;
         }
-
-        .scroll-button:hover {
-          background: rgba(251, 191, 36, 0.25);
-        }
-
-        /* --- MODAL (unchanged) --- */
 
         .modal-backdrop {
           position: fixed;
@@ -200,23 +235,6 @@ const Page: React.FC = () => {
           width: 100%;
           max-width: 640px;
           position: relative;
-          animation: scroll-pop 260ms ease-out;
-        }
-
-        .modal-close {
-          position: absolute;
-          top: -2.2rem;
-          right: 0;
-          color: #ddd;
-          font-size: 1.3rem;
-          background: none;
-          border: none;
-          cursor: pointer;
-        }
-
-        .scrollable-letter {
-          max-height: 80vh;
-          overflow-y: auto;
         }
 
         .scroll-inner {
@@ -236,17 +254,6 @@ const Page: React.FC = () => {
           font-size: 1rem;
           color: #3b1f0b;
           line-height: 1.7;
-        }
-
-        @keyframes scroll-pop {
-          from {
-            opacity: 0;
-            transform: translateY(12px) scale(0.97);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
         }
       `}</style>
     </main>
