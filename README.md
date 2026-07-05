@@ -35,3 +35,17 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 # anna-thanksgiving-2025
+# Private deployment
+
+This site is protected by server-side proxy middleware. Unauthenticated requests are
+redirected to `/unlock`, including page routes, private media, and Next.js
+bundles.
+
+Set these environment variables in production before deploying:
+
+```bash
+ANNA_SITE_PASSWORD="the shared password"
+ANNA_AUTH_SECRET="a long random secret, at least 32 characters"
+```
+
+Do not commit the real password or auth secret.

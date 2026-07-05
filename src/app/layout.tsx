@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "grateful for you, anna ❤️",
-  description: "Thanksgiving 2025",
+  title: "Protected",
+  description: "Private page",
 };
 
 export default function RootLayout({
